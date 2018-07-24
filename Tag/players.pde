@@ -11,7 +11,6 @@ class players {
   boolean[] movingKeys;
   int moveBy = 3;
   float score = 0;; 
-  boolean boosted = false;
 
   players(int x, int y, int sw, color c, color player, boolean[] k, int m) {
     playerX = x;

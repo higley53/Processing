@@ -10,7 +10,7 @@ void scoreBoard() {
   text("Player 2 Score: " + round(player2.score/60), 5, 40);
   fill(255);
   textAlign(CENTER);
-  text("Reset Game", width - 50, scoreBarHeight/2 + 7);
+  text("Reset Game", width - 50, scoreBarHeight/2);
 }
 
 boolean overRect(int x1, int y1, int x2, int y2) {
@@ -26,9 +26,8 @@ void beginGame() {
   textAlign(CENTER);
   fill(0);
   textSize(15);
-  text("The red player is 'it', first player to "+ endScore + " points wins.", width/2, height/2 - 17);
-  text("Player 1 uses WASD  -  Player 2 uses arrows", width/2, height/2);
-  text("Blue spots are speed boosts!", width/2, height/2 + 17);
+  text("The red player is 'it', first player to "+ endScore + " points wins.", width/2, height/2);
+  text("Player 1 uses WASD  -  Player 2 uses arrows", width/2, height/2 + 17);
   rectMode(CENTER);
   fill(80);
   stroke(80);
@@ -46,15 +45,13 @@ void beginGame() {
   player1.radius = radius;
   player2.radius = radius;
   gameOver = false;
-  speedBoostX = random(width);
-  speedBoostY = random(height - scoreBarHeight) + 50;
 }
 
 void endGame() {
   player1.radius = 0;
   player2.radius = 0;
   fill(0);
-  text(whoWon() + " Wins!", width/2, height/2);
+  text(whoWon() + " Wins!", width/2,height/2);
   gameOver = true;
 }
 
@@ -65,18 +62,3 @@ String whoWon() {
     return "Player 2";
   }
 } 
-
-int playerSpeedBoostTime = 0;
-
-void speedBoost(players p) {
-  p.moveBy = 5;
-  boostGrabbed = true;
-  if (!p.boosted) {
-    playerSpeedBoostTime = millis();
-  } 
-  p.boosted = true;
-  if (millis() - playerSpeedBoostTime >= 1000) {
-    p.boosted = false;
-    p.moveBy = 3;
-  }
-}
