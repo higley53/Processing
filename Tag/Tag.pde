@@ -8,8 +8,11 @@ int player2MoveBy = 3;
 boolean offShape = true;
 boolean gameStarted = false;
 boolean gameOver = false;
+boolean boostGrabbed = false;
 
 int endScore = 40;
+int speedBoostTimer = 100;
+int speedBoostTime;
 
 int radius = 12;
 color player1Color;
@@ -25,6 +28,9 @@ int player1Y;
 int player2X;
 int player2Y;
 
+float speedBoostX;
+float speedBoostY;
+
 players player1; 
 players player2;
 
@@ -36,6 +42,9 @@ void setup() {
 
   player1X = radius * 2;
   player1Y = scoreBarHeight + radius * 2 + 3;
+
+  speedBoostX = random(width);
+  speedBoostY = random(height - scoreBarHeight) + 50;
 
   if (random(2) >= 1) {
     player1Color = color(255, 0, 0);
@@ -67,6 +76,23 @@ void draw() {
   scoreBoard();
 
   if (gameStarted) {
+
+    if (!boostGrabbed) {
+      speedBoostTime = millis();
+      fill(0, 130, 130);
+      ellipse(speedBoostX, speedBoostY, radius *1.25, radius *1.25);
+    } else if ((millis() - speedBoostTime >= speedBoostTimer)) { 
+      boostGrabbed = false;
+      speedBoostX = random(width);
+      speedBoostY = random(height - scoreBarHeight - radius) + 50 + radius;
+    }
+
+    if (overRect(player1.playerX, player1.playerY, (int)speedBoostX, (int)speedBoostY) || player1.boosted) {
+      speedBoost(player1);
+    }
+    if (overRect(player2.playerX, player2.playerY, (int)speedBoostX, (int)speedBoostY) || player2.boosted) {
+      speedBoost(player2);
+    }
     if (overRect(player1.playerX, player1.playerY, player2.playerX, player2.playerY)) {
 
       if (offShape) {
@@ -90,7 +116,7 @@ void draw() {
   } else {
     beginGame();
   }
-  if(player1.score >= endScore*60 || player2.score >= endScore*60) {
+  if (player1.score >= endScore*60 || player2.score >= endScore*60) {
     endGame();
   }
 }
