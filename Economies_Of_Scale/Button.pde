@@ -1,17 +1,22 @@
 class button {
-  float buttonX, buttonY, buttonWidth, buttonHeight;
+  float buttonX, buttonY, buttonWidth, buttonHeight, capGoodEffect, conGoodEffect, buttonColor;
   String display;
-  button(float x, float y, String d) {
+  boolean enabled = true;
+  button(float x, float y, String d, float cap, float con) {
     buttonX = x;
     buttonY = y;
     buttonWidth = 300;
     buttonHeight = 35;
     display = d;
+    capGoodEffect = cap;
+    conGoodEffect = con;
+    buttonColor = 0;
 
     if (display.length() > 20) {
       String temp = display.substring(0, 20);
       boolean spaced = false;
       buttonHeight = 70;
+      buttonY = buttonY + 20;
       for (int i = 20; i < display.length(); i++) {
         temp += display.substring(i, i + 1);
         if (display.substring(i, i + 1).equals(" ") && !spaced) {
@@ -20,18 +25,23 @@ class button {
         }
       }
       display = temp;
-      System.out.println(display);
     }
+    gridButtonY = gridButtonY + buttonHeight + 10;
   }
 
 
   void update() {
-    fill(0);
+    fill(buttonColor);
+    rectMode(CENTER);
     rect(buttonX, buttonY, buttonWidth, buttonHeight);
     textAlign(CENTER, CENTER);
     textSize(20);
     fill(255);
-
-    text(display, buttonX + (buttonWidth/2), buttonY + (buttonHeight/2));
+    text(display, buttonX, buttonY);
+    if (mousePressed && mouseX >= buttonX && mouseX <= buttonX + buttonWidth  && mouseY >= buttonY && mouseY <= buttonY + buttonHeight && enabled) {
+      System.out.println(conGoodEffect); 
+      buttonColor = 130;
+      enabled = false;
+    }
   }
 }
