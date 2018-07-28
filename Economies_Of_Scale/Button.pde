@@ -38,10 +38,14 @@ class button {
     textSize(20);
     fill(255);
     text(display, buttonX, buttonY);
-    if (mousePressed && mouseX >= buttonX && mouseX <= buttonX + buttonWidth  && mouseY >= buttonY && mouseY <= buttonY + buttonHeight && enabled) {
-      System.out.println(conGoodEffect); 
-      buttonColor = 130;
-      enabled = false;
-    }
+  }
+  void pressed() {
+    buttonColor = 130;
+    enabled = false;
+  }
+
+
+  void scrollBy(float scroll) {
+    buttonY += scroll;
   }
 }
