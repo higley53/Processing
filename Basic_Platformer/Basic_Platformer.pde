@@ -24,6 +24,7 @@ void keyPressed() {
     p1.velocityX = movement;
   }
   if (key == ' ') {
+    
     p1.applyYForce(jump);
   }
 }

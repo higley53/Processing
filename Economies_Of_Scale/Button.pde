@@ -1,8 +1,8 @@
 class button {
-  float buttonX, buttonY, buttonWidth, buttonHeight, capGoodEffect, conGoodEffect, buttonColor;
+  float buttonX, buttonY, buttonWidth, buttonHeight, capGoodEffect, conGoodEffect, buttonColor, decisionPointsCost;
   String display;
   boolean enabled = true;
-  button(float x, float y, String d, float cap, float con) {
+  button(float x, float y, String d, float cap, float con, float dp) {
     buttonX = x;
     buttonY = y;
     buttonWidth = 300;
@@ -11,6 +11,7 @@ class button {
     capGoodEffect = cap;
     conGoodEffect = con;
     buttonColor = 0;
+    decisionPointsCost = dp;
 
     if (display.length() > 20) {
       String temp = display.substring(0, 20);
@@ -44,7 +45,19 @@ class button {
     enabled = false;
   }
 
-
+  void mouseOver() {
+    if (mouseX >= buttonX - (buttonWidth/2) && mouseX <= buttonX + (buttonWidth/2)  && mouseY >= buttonY - (buttonHeight/2)
+      && mouseY <= buttonY + (buttonHeight/2) && enabled) {
+      fill(100);
+      rectMode(CORNER);
+      rect(mouseX-180, mouseY, 180, 63);
+      textSize(13);
+      textAlign(LEFT);
+      fill(255);
+      text("Consumer Good Effect " + conGoodEffect + " \nCapital Good Effect " + capGoodEffect + " \nDecision Points Cost: "
+      + decisionPointsCost, mouseX - 175, mouseY + 15);
+    }
+  }
   void scrollBy(float scroll) {
     buttonY += scroll;
   }
