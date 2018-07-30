@@ -7,11 +7,13 @@ float[] capGoodEffect = {1, 0, 2, -1 };
 float[] conGoodEffect = {0, 1, -1, 3 };
 float[] globalDecisionPointsCost = {3, 3, 7, 7};
 float gridButtonX, gridButtonY;
-float ecoScore, globalDecisionPoints;
+float ecoScore, globalDecisionPoints, globalHappiness = 1, globalGrowthRate = 1, relativeCon, relativeCap, globalCapital = 1, globalConsumer = 1, globalTotalFactor;
+float lastFrameY;
+graph scoreGraph;
 
 void setup() {
-  size(800,600);
-  //fullScreen();
+  size(1600, 900);
+  scoreGraph = new graph();
   gridButtonX = width-170;  
   gridButtonY = 100;
   for (int i = 0; i < buttonNames.length; i ++) {
@@ -25,6 +27,8 @@ scoreBoard scoreBoard = new scoreBoard();
 void draw() {
   background(255);
   scoreBoard.update();
+  scoreGraph.display();
+  stroke(0);
   for (button b : buttonList) {
     b.update();
   }

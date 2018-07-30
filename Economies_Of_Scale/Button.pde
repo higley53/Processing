@@ -43,6 +43,8 @@ class button {
   void pressed() {
     buttonColor = 130;
     enabled = false;
+    globalCapital +=capGoodEffect;
+    globalConsumer +=conGoodEffect;
   }
 
   void mouseOver() {

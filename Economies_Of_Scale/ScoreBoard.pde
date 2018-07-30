@@ -12,8 +12,9 @@ class scoreBoard {
     rect(sBWidth, 0, sBWidth, height);
     textAlign(LEFT, CENTER);
     fill(255);
-    textSize(25);
-    text("Economic Score: " + ecoScore + "   Decsion Points: " + globalDecisionPoints, 10, sBHeight/2);
+    textSize(23);
+    text("Economic Score: " + nfc(ecoScore, 2) + "  Decsion Points: " + round(globalDecisionPoints) + "  Growth Rate: " + nfc(globalGrowthRate, 2), 10, sBHeight/4);
+    text("Capital Goods: " + round(globalCapital) + "  Consumer Goods: " + round(globalConsumer) + "  Happiness: " + nfc(globalHappiness, 2), 10, sBHeight*3/4);
 
 
     //Decisions background and title
@@ -24,8 +25,15 @@ class scoreBoard {
 
     //Count up ecoScore and DP
     if (millis()%1000 < 16.7) {
-      globalDecisionPoints++;
-      System.out.println(millis());
+      globalTotalFactor = globalConsumer + globalCapital;
+      relativeCap = globalCapital/globalTotalFactor;
+      relativeCon = globalConsumer/globalTotalFactor;
+      globalGrowthRate = globalGrowthRate + ((float)Math.cbrt((relativeCap) - .5))/10;
+      ecoScore = globalGrowthRate + ecoScore;
+      globalHappiness = globalHappiness + ((float)Math.cbrt((relativeCon) - .5))/10;
+      globalDecisionPoints += globalHappiness;
+      
+      scoreGraph.update();
     }
     //globalDecisionPoints++;
   }
