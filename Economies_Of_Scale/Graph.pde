@@ -15,12 +15,12 @@ class graph {
     fill(200);
     rect(graphBackgroundX, graphBackgroundY, graphBackgroundWidth, graphBackgroundHeight);
     for (lineStorage l : lineList) {
+      //  if (offGraph) {
+      //    l.x1 = l.x1 -3;
+      //    l.x2 = l.x2 -3;
+      //    offGraph = false;
+      //  }
       stroke(0);
-      if(offGraph) {
-         l.x1 = l.x1 -5;
-         l.x2 = l.x2 -5;
-         offGraph = false;
-      }
       strokeWeight(4);
       line(l.x1, l.y1, l.x2, l.y2); 
       strokeWeight(1);
@@ -30,11 +30,15 @@ class graph {
     stroke(0);
     lineStorage l = new lineStorage(lineX, height - lastEcoScore, lineX+3, height - ecoScore);
     lineList.add(l);
-    lineX = lineX + 5;
+    lineX = lineX + 3;
     lastEcoScore = ecoScore;
-    if(lineList.size() >= 79) {
-      lineList.remove(0);
-      offGraph = true;
+    if (lineList.size() >= 79) {
+      for (int i = 0; i < lineList.size() - 5; i += 5) {
+        lineList.remove(i);
+        offGraph = true;
+        lineList.get(i).x1 -= 3;
+        lineList.get(i).x2 -= 3;
+      }
     }
   }
 }

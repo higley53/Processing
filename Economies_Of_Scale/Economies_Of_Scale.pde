@@ -1,59 +1,74 @@
 /*
 Economies of Scale
  */
-ArrayList<button> buttonList = new ArrayList<button>();
-String[] buttonNames = {"Create stone hammers", "Forage for berries", "Build huts", "Have a festival"};
+ArrayList<decisionButton> decisionButtonList = new ArrayList<decisionButton>();
+String[] decisionButtonNames = {"Create stone hammers", "Forage for berries", "Build huts", "Have a festival"};
 float[] capGoodEffect = {1, 0, 2, -1 };
 float[] conGoodEffect = {0, 1, -1, 3 };
 float[] globalDecisionPointsCost = {3, 3, 7, 7};
-float gridButtonX, gridButtonY;
-float ecoScore, globalDecisionPoints, globalHappiness = 1, globalGrowthRate = 1, relativeCon, relativeCap, globalCapital = 1, globalConsumer = 1, globalTotalFactor;
+float griddecisionButtonX, griddecisionButtonY;
+float ecoScore = 1, globalDecisionPoints = 1, globalHappiness = 1, globalGrowthRate = 1, relativeCon, relativeCap, globalCapital = 1, globalConsumer = 1, globalTotalFactor;
 float lastFrameY;
-graph scoreGraph;
+graph scoreGraph; 
+animationArea animationArea;
+panels panels;
+menu menu;
+ArrayList<menuButton> menuButtonList = new ArrayList<menuButton> ();
+String[] menuButtonNames = {"Decisions", "Graph"};
+boolean[] displayField;
 
 void setup() {
   size(1600, 900);
+  //fullScreen();
   scoreGraph = new graph();
-  gridButtonX = width-170;  
-  gridButtonY = 100;
-  for (int i = 0; i < buttonNames.length; i ++) {
-    button b = new button(gridButtonX, gridButtonY, buttonNames[i], capGoodEffect[i], conGoodEffect[i], globalDecisionPointsCost[i]);
-    buttonList.add(b);
+  griddecisionButtonX = width-170;  
+  griddecisionButtonY = 100;
+  for (int i = 0; i < decisionButtonNames.length; i ++) {
+    decisionButton b = new decisionButton(griddecisionButtonX, griddecisionButtonY, 300, 35, decisionButtonNames[i], color(0, 0, 0), 
+      capGoodEffect[i], conGoodEffect[i], globalDecisionPointsCost[i]);
+    decisionButtonList.add(b);
   }
+  panels = new panels();
+  menu = new menu();
+  animationArea = new animationArea(0, panels.sBHeight, panels.sBWidth, height);
 }
-
-scoreBoard scoreBoard = new scoreBoard();
 
 void draw() {
   background(255);
-  scoreBoard.update();
-  scoreGraph.display();
+  panels.displayScoreBoard();
+  animationArea.display();
+  menu.display();
   stroke(0);
-  for (button b : buttonList) {
-    b.update();
-  }
-  for (button b : buttonList) {
-    b.mouseOver();
-  }
 }
 
 void mousePressed() {
-  for (button b : buttonList) {
-    if (mouseX >= b.buttonX - (b.buttonWidth/2) && mouseX <= b.buttonX + (b.buttonWidth/2)  && mouseY >= b.buttonY - (b.buttonHeight/2)
-      && mouseY <= b.buttonY + (b.buttonHeight/2) && b.enabled) {
-      b.pressed();
+  float mx = mouseX, my = mouseY;
+  for (decisionButton b : decisionButtonList) {
+    b.pressed();
+  }
+  menu.pressed();
+  panels.accelerateTimeButton();
+  panels.decelerateTimeButton();
+  for (menuButton b : menuButtonList) {
+    if (b.buttonPressed(mx, my)) {
+      menu.displayMenu = false;
+      for (int i = 0; i < menuButtonNames.length; i++) {
+        if (b.display.equals(menuButtonNames[i])) {
+          displayField[i] = true;
+        }
+      }
     }
   }
 }
 
 void keyPressed() {
   if (keyCode == UP) {
-    for (button b : buttonList) {
+    for (decisionButton b : decisionButtonList) {
       b.scrollBy(-5);
     }
   }
   if (keyCode == DOWN) {
-    for (button b : buttonList) {
+    for (decisionButton b : decisionButtonList) {
       b.scrollBy(5);
     }
   }
